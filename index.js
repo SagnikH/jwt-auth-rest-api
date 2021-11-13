@@ -1,8 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 const authRoutes = require("./routers/authRoutes");
-const userSchema = require("./models/user");
 require("dotenv").config();
 
 const URI = process.env.MONGODB_URI;
