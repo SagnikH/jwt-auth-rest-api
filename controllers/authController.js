@@ -1,9 +1,17 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const {
+	createUserToken: signJWT,
+	verifyUserCredentials,
+} = require("../utils/auth");
 
 //to return a readable error message
 function handleErrors(e) {
+	//handle duplicates
+	const code = e.code;
+	if (code === 11000) return { duplicate: "Duplicate Email ID" };
+
 	const error = e.errors;
 	let errorMessages = { email: "", password: "", name: "" };
 
@@ -27,16 +35,46 @@ async function signupController(req, res) {
 		const user = await User.create({ email, password: hashedPassword, name });
 		const id = user._id.toString(); //to extract the unqiue id from each newly created document
 
-		res.status(201).json(user);
+		//gets the JWT token
+		const jwtToken = signJWT({ email, hashedPassword });
+
+		//sets the response header with a value for the jwtToken
+		res.header("auth-token", jwtToken).status(201).json({ jwtToken, user });
+
+		// res.status(201).json(user);
 		console.log(id);
 	} catch (e) {
 		const errors = handleErrors(e);
+		console.log(e);
 
 		res.status(400).json(errors);
-		console.log(e);
 	}
 }
 
-function signinController(req, res) {}
+async function signinController(req, res) {
+	const { email, password } = req.body;
+
+	try {
+		//verify if user exists and the password is correct
+		const result = await verifyUserCredentials({ email, password });
+		switch (result) {
+			case 0:
+				res.status(400).send("Enter correct emailId");
+				break;
+			case 1:
+				res.status(400).send("Enter correct password");
+				break;
+			case 2:
+				//gets the JWT token
+				const jwtToken = signJWT({ email, password });
+
+				// sets the response header with a value for the jwtToken
+				res.header("auth-token", jwtToken).status(200).json(jwtToken);
+				break;
+		}
+	} catch (e) {
+		console.log(e);
+	}
+}
 
 module.exports = { signupController, signinController };
