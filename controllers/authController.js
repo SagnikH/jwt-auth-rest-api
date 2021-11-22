@@ -4,7 +4,7 @@ const User = require("../models/user");
 const {
 	createUserToken: signJWT,
 	verifyUserCredentials,
-} = require("../utils/auth");
+} = require("../utils/authUtils");
 
 //to return a readable error message
 function handleErrors(e) {
@@ -36,12 +36,11 @@ async function signupController(req, res) {
 		const id = user._id.toString(); //to extract the unqiue id from each newly created document
 
 		//gets the JWT token
-		const jwtToken = signJWT({ email, hashedPassword });
+		const jwtToken = signJWT({ email });
 
 		//sets the response header with a value for the jwtToken
 		res.header("auth-token", jwtToken).status(201).json({ jwtToken, user });
 
-		// res.status(201).json(user);
 		console.log(id);
 	} catch (e) {
 		const errors = handleErrors(e);
@@ -66,7 +65,7 @@ async function signinController(req, res) {
 				break;
 			case 2:
 				//gets the JWT token
-				const jwtToken = signJWT({ email, password });
+				const jwtToken = signJWT({ email });
 
 				// sets the response header with a value for the jwtToken
 				res.header("auth-token", jwtToken).status(200).json(jwtToken);

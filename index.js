@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./routers/authRoutes");
+const verifiedRoutes = require("./routers/verifiedRoutes");
 require("dotenv").config();
 
 const URI = process.env.MONGODB_URI;
@@ -22,6 +23,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/user", authRoutes);
+app.use("/verified", verifiedRoutes);
 
 app.get("/", (req, res) => {
 	res.send("Let's start");

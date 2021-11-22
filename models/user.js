@@ -27,3 +27,11 @@ const userSchema = new Schema(
 );
 
 module.exports = mongoose.model("testusers", userSchema);
+
+/*
+	https://stackoverflow.com/a/10167170/13962659
+	to apply secondary index with an unique constraint
+	add; unique : true and index : true -> two properties and {strict : true}
+
+	error object has a property of code === 11000 => duplicates
+*/
