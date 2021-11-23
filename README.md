@@ -14,8 +14,8 @@ Used MVC model to structure the project.
 |[`/verified`][2]        |restricted endpoint *(cannot be accessed without signing in)*  |
 
 
-## User Schema
-[`testusers`][3]
+## Schema
+[**`testusers model`**][3]
 
 ![model][model]
 
