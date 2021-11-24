@@ -26,6 +26,16 @@ Used MVC model to structure the project.
 * Used mongoose as the ODM for MongoDB.
 * Tested endpoints with Postman.
 
+---
+### Notes
+For authentication we can use the concept of sessions or JWTs.
+Sessions can be handled in two different ways with cookies :-
+* on the client side (*using cookie-session module*).
+* on the server side (*using express-session*).
+
+If we handle the session from server side, we generally store a session identifier inside a cookie. And this identifier stores the session data on the server, generally a database.  
+On the other hand if we handle the session on the client side, the cookie stores session data inside the client in the cookie itself.
+
 [0]: https://github.com/SagnikH/jwt-auth-rest-api/blob/master/index.js
 [1]: https://github.com/SagnikH/jwt-auth-rest-api/blob/master/routers/authRoutes.js
 [2]: https://github.com/SagnikH/jwt-auth-rest-api/blob/master/routers/verifiedRoutes.js
